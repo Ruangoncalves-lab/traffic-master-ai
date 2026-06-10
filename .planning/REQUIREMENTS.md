@@ -9,8 +9,8 @@ Requirements for stabilization, unit testing, and backend robustness.
 
 ### Testing Frameworks & Setup
 
-- [ ] **TEST-01**: Configure Vitest test runner on the frontend with basic component mount assertions
-- [ ] **TEST-02**: Configure Playwright browser tests runner on the root directory
+- [x] **TEST-01**: Configure Vitest test runner on the frontend with basic component mount assertions
+- [x] **TEST-02**: Configure Playwright browser tests runner on the root directory
 - [ ] **TEST-03**: Create frontend E2E tests covering login flows and OAuth redirect behavior
 - [ ] **TEST-04**: Create backend integration tests validating controller endpoints with mock payloads
 
@@ -39,14 +39,15 @@ Deferred features not in the active roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TEST-01 | Phase 1 (Testing Setup) | Pending |
-| TEST-02 | Phase 1 (Testing Setup) | Pending |
+| TEST-01 | Phase 1 (Testing Setup) | Complete |
+| TEST-02 | Phase 1 (Testing Setup) | Complete |
 | TEST-03 | Phase 2 (E2E & Unit Coverage) | Pending |
 | TEST-04 | Phase 2 (E2E & Unit Coverage) | Pending |
 | DB-01 | Phase 3 (Database Robustness) | Pending |
 | DB-02 | Phase 3 (Database Robustness) | Pending |
 
 **Coverage:**
+
 - v1 requirements: 6 total
 - Mapped to phases: 6
 - Unmapped: 0 ✓
