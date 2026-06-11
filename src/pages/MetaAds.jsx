@@ -60,15 +60,15 @@ const MetaAds = () => {
 
     return (
         <div className="space-y-6 lg:space-y-8">
-            {/* Header - White text for contrast on Green Background */}
-            <div className="flex items-end justify-between mb-6 lg:mb-8 text-white relative z-10">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8 text-slate-800 relative z-10">
                 <div>
-                    <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2">Meta Ads</h1>
-                    <p className="text-emerald-100/80 font-medium">Gerencie e otimize suas campanhas da Meta com IA.</p>
+                    <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2 text-slate-900">Meta Ads</h1>
+                    <p className="text-slate-500 font-medium">Gerencie e otimize suas campanhas da Meta com IA.</p>
                 </div>
-                <div className="flex items-center gap-4">
-                    <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10">
-                        <select className="bg-transparent text-white text-sm font-medium focus:outline-none [&>option]:text-gray-800">
+                <div className="flex flex-wrap items-center gap-3">
+                    <div className="bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm flex items-center">
+                        <select className="bg-transparent text-slate-700 text-sm font-semibold focus:outline-none cursor-pointer">
                             <option>Últimos 7 dias</option>
                             <option>Últimos 30 dias</option>
                             <option>Últimos 90 dias</option>
@@ -77,7 +77,7 @@ const MetaAds = () => {
                     </div>
                     <button
                         onClick={() => setShowWizard(true)}
-                        className="btn-primary bg-white text-[#113C3C] hover:bg-emerald-50 border-none shadow-lg shadow-black/5 flex items-center gap-2"
+                        className="btn-primary text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-500/10 flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold transition-all"
                     >
                         <Plus size={18} />
                         <span>Criar Campanha</span>

@@ -38,17 +38,17 @@ const DeepAnalytics = () => {
     return (
         <div className="space-y-8">
             {/* Header */}
-            <div className="flex items-end justify-between mb-6 lg:mb-8 text-white relative z-10">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8 text-slate-800 relative z-10">
                 <div>
-                    <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2">Analytics Profundo</h1>
-                    <p className="text-emerald-100/80 font-medium">Análise detalhada de performance cross-channel.</p>
+                    <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2 text-slate-900">Analytics Profundo</h1>
+                    <p className="text-slate-500 font-medium">Análise detalhada de performance cross-channel.</p>
                 </div>
-                <div className="flex items-center gap-4">
-                    <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10">
+                <div className="flex flex-wrap items-center gap-3">
+                    <div className="bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm flex items-center">
                         <select
                             value={dateRange}
                             onChange={(e) => setDateRange(e.target.value)}
-                            className="bg-transparent text-white text-sm font-medium focus:outline-none [&>option]:text-gray-800"
+                            className="bg-transparent text-slate-700 text-sm font-semibold focus:outline-none cursor-pointer"
                         >
                             <option>Últimos 7 dias</option>
                             <option>Últimos 30 dias</option>
@@ -57,10 +57,10 @@ const DeepAnalytics = () => {
                             <option>Este Ano</option>
                         </select>
                     </div>
-                    <button className="btn-secondary bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-sm">
+                    <button className="btn-secondary px-5 py-2.5 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 shadow-sm rounded-xl font-semibold text-sm flex items-center gap-2 transition-all">
                         <Filter size={18} /> Filtros Avançados
                     </button>
-                    <button className="btn-primary bg-white text-[#113C3C] hover:bg-emerald-50 border-none shadow-lg shadow-black/5 flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold transition-all">
+                    <button className="btn-primary text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-500/10 flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold transition-all">
                         <Download size={18} />
                         <span>Exportar Relatório</span>
                     </button>

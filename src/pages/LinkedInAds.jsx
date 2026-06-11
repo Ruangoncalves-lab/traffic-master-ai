@@ -35,18 +35,18 @@ const LinkedInAds = () => {
     return (
         <div className="space-y-6 lg:space-y-8">
             {/* Header */}
-            <div className="flex items-end justify-between mb-6 lg:mb-8 text-white relative z-10">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8 text-slate-800 relative z-10">
                 <div>
-                    <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2 flex items-center gap-3">
+                    <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2 flex items-center gap-3 text-slate-900">
                         <span className="p-2 bg-[#0077B5] rounded-lg"><Linkedin size={24} className="text-white" /></span>
                         LinkedIn Ads
                     </h1>
-                    <p className="text-emerald-100/80 font-medium">Alcance decisores e profissionais qualificados.</p>
+                    <p className="text-slate-500 font-medium">Alcance decisores e profissionais qualificados.</p>
                 </div>
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => setShowWizard(true)}
-                        className="btn-primary bg-white text-[#113C3C] hover:bg-emerald-50 border-none shadow-lg shadow-black/5 flex items-center gap-2"
+                        className="btn-primary text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-500/10 flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold transition-all"
                     >
                         <Plus size={18} />
                         <span>Criar Campanha</span>

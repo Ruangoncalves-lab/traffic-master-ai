@@ -43,8 +43,8 @@ const SmartCampaignCreator = () => {
             <div className="flex justify-center mb-12">
                 <div className="flex items-center gap-4">
                     {[1, 2, 3].map((s) => (
-                        <div key={s} className={`flex items-center gap-2 ${step >= s ? 'text-emerald-700 font-bold' : 'text-gray-300'}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all ${step >= s ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30' : 'bg-gray-100'
+                        <div key={s} className={`flex items-center gap-2 ${step >= s ? 'text-emerald-700 font-bold' : 'text-slate-400 font-medium'}`}>
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all ${step >= s ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30' : 'bg-slate-200/70 text-slate-500'
                                 }`}>
                                 {s}
                             </div>
@@ -53,7 +53,7 @@ const SmartCampaignCreator = () => {
                                 {s === 2 && 'Configuração IA'}
                                 {s === 3 && 'Revisão'}
                             </span>
-                            {s < 3 && <div className={`w-12 h-1 rounded-full mx-2 ${step > s ? 'bg-emerald-200' : 'bg-gray-100'}`}></div>}
+                            {s < 3 && <div className={`w-12 h-1 rounded-full mx-2 ${step > s ? 'bg-emerald-200' : 'bg-slate-200'}`}></div>}
                         </div>
                     ))}
                 </div>
