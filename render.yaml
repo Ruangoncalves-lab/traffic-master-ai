@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: traffic-master-backend
+    env: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: SUPABASE_URL
+        sync: false
+        placeholder: "URL do projeto Supabase (ex: https://drqczhmajdqrowexurmi.supabase.co)"
+      - key: SUPABASE_KEY
+        sync: false
+        placeholder: "Chave anon ou service_role do Supabase"
+      - key: DATABASE_URL
+        sync: false
+        placeholder: "Postgres Connection String para o Supabase"
+      - key: JWT_SECRET
+        sync: false
+        placeholder: "Chave secreta para assinatura dos tokens JWT"
+      - key: FB_APP_ID
+        sync: false
+        placeholder: "ID do App da Meta Ads API (Opcional)"
+      - key: FB_APP_SECRET
+        sync: false
+        placeholder: "Chave secreta do App da Meta Ads API (Opcional)"
