@@ -13,8 +13,12 @@
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
+    "@heroui/react": "^3.1.0",
     "@supabase/supabase-js": "^2.86.2",
     "@tailwindcss/postcss": "^4.1.17",
+    "balloons-js": "^0.0.3",
+    "canvas-confetti": "^1.9.4",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.554.0",
@@ -22,6 +26,7 @@
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.6",
     "recharts": "^3.5.0",
+    "tailwind-merge": "^3.6.0",
     "uuid": "^13.0.0",
     "zustand": "^5.0.8"
   },
