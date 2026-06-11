@@ -18,8 +18,22 @@ class MockModel {
         Object.assign(this, data);
     }
 
-    // Fila de escrita para controle lógico de concorrência e prevenção de conflitos de gravação
-    static writeQueue = Promise.resolve();
+    // Fila de transações única para controle rigoroso de concorrência assíncrona
+    static transactionQueue = Promise.resolve();
+
+    static async runTransaction(fn) {
+        return new Promise((resolve, reject) => {
+            MockModel.transactionQueue = MockModel.transactionQueue.then(async () => {
+                try {
+                    const result = await fn();
+                    resolve(result);
+                } catch (err) {
+                    console.error('Erro na transação do banco mockDb:', err);
+                    reject(err);
+                }
+            });
+        });
+    }
 
     static async _readDb() {
         try {
@@ -32,113 +46,133 @@ class MockModel {
     }
 
     static async _writeDb(data) {
-        return new Promise((resolve, reject) => {
-            MockModel.writeQueue = MockModel.writeQueue.then(async () => {
-                try {
-                    await fs.promises.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
-                    resolve();
-                } catch (err) {
-                    console.error('Erro na escrita do banco mockDb:', err);
-                    reject(err);
-                }
-            });
-        });
+        try {
+            await fs.promises.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+        } catch (err) {
+            console.error('Erro na escrita do banco mockDb:', err);
+            throw err;
+        }
     }
 
     static async findOne(query) {
-        const db = await this._readDb();
-        const collection = db[this.collectionName] || [];
-        const item = collection.find(item => {
-            for (let key in query) {
-                if (item[key] !== query[key]) return false;
-            }
-            return true;
+        return this.runTransaction(async () => {
+            const db = await this._readDb();
+            const collection = db[this.collectionName] || [];
+            const item = collection.find(item => {
+                for (let key in query) {
+                    if (item[key] !== query[key]) return false;
+                }
+                return true;
+            });
+            return item ? new this(item) : null;
         });
-        return item ? new this(item) : null;
     }
 
     static async findById(id) {
-        const db = await this._readDb();
-        const collection = db[this.collectionName] || [];
-        const item = collection.find(i => i._id === id.toString());
-        return item ? new this(item) : null;
+        return this.runTransaction(async () => {
+            const db = await this._readDb();
+            const collection = db[this.collectionName] || [];
+            const item = collection.find(i => i._id === id.toString());
+            return item ? new this(item) : null;
+        });
     }
 
     static async find(query = {}) {
-        const db = await this._readDb();
-        const collection = db[this.collectionName] || [];
-        const items = collection.filter(item => {
-            for (let key in query) {
-                if (item[key] !== query[key]) return false;
-            }
-            return true;
+        return this.runTransaction(async () => {
+            const db = await this._readDb();
+            const collection = db[this.collectionName] || [];
+            const items = collection.filter(item => {
+                for (let key in query) {
+                    if (item[key] !== query[key]) return false;
+                }
+                return true;
+            });
+            return items.map(i => new this(i));
         });
-        return items.map(i => new this(i));
     }
 
     static async create(data) {
-        const db = await this._readDb();
-        const collection = db[this.collectionName] || [];
+        return this.runTransaction(async () => {
+            const db = await this._readDb();
+            const collection = db[this.collectionName] || [];
 
-        const newItem = {
-            _id: crypto.randomUUID(),
-            created_at: new Date(),
-            updated_at: new Date(),
-            ...data
-        };
+            const newItem = {
+                _id: crypto.randomUUID(),
+                created_at: new Date(),
+                updated_at: new Date(),
+                ...data
+            };
 
-        if (newItem.tenant_id && typeof newItem.tenant_id === 'object') {
-            newItem.tenant_id = newItem.tenant_id.toString();
-        }
+            if (newItem.tenant_id && typeof newItem.tenant_id === 'object') {
+                newItem.tenant_id = newItem.tenant_id.toString();
+            }
 
-        collection.push(newItem);
-        db[this.collectionName] = collection;
-        await this._writeDb(db);
+            collection.push(newItem);
+            db[this.collectionName] = collection;
+            await this._writeDb(db);
 
-        return new this(newItem);
+            return new this(newItem);
+        });
     }
 
     static async findOneAndUpdate(query, update, options) {
-        const db = await this._readDb();
-        let collection = db[this.collectionName] || [];
+        return this.runTransaction(async () => {
+            const db = await this._readDb();
+            let collection = db[this.collectionName] || [];
 
-        let itemIndex = collection.findIndex(item => {
-            for (let key in query) {
-                if (item[key] !== query[key]) return false;
+            let itemIndex = collection.findIndex(item => {
+                for (let key in query) {
+                    if (item[key] !== query[key]) return false;
+                }
+                return true;
+            });
+
+            if (itemIndex === -1) {
+                if (options && options.upsert) {
+                    const newItem = {
+                        _id: crypto.randomUUID(),
+                        created_at: new Date(),
+                        updated_at: new Date(),
+                        ...query,
+                        ...update
+                    };
+                    if (newItem.tenant_id && typeof newItem.tenant_id === 'object') {
+                        newItem.tenant_id = newItem.tenant_id.toString();
+                    }
+                    collection.push(newItem);
+                    db[this.collectionName] = collection;
+                    await this._writeDb(db);
+                    return new this(newItem);
+                }
+                return null;
             }
-            return true;
+
+            const updatedItem = { ...collection[itemIndex], ...update, updated_at: new Date() };
+            collection[itemIndex] = updatedItem;
+
+            db[this.collectionName] = collection;
+            await this._writeDb(db);
+
+            return new this(updatedItem);
         });
-
-        if (itemIndex === -1) {
-            if (options && options.upsert) {
-                return this.create({ ...query, ...update });
-            }
-            return null;
-        }
-
-        const updatedItem = { ...collection[itemIndex], ...update, updated_at: new Date() };
-        collection[itemIndex] = updatedItem;
-
-        db[this.collectionName] = collection;
-        await this._writeDb(db);
-
-        return new this(updatedItem);
     }
 
     async save() {
-        const db = await MockModel._readDb();
-        let collection = db[this.constructor.collectionName] || [];
-        const index = collection.findIndex(i => i._id === this._id);
+        return MockModel.runTransaction(async () => {
+            const db = await MockModel._readDb();
+            let collection = db[this.constructor.collectionName] || [];
+            const index = collection.findIndex(i => i._id === this._id);
 
-        if (index !== -1) {
-            collection[index] = { ...this, updated_at: new Date() };
-        } else {
-            collection.push(this);
-        }
+            if (index !== -1) {
+                collection[index] = { ...this, updated_at: new Date() };
+            } else {
+                collection.push(this);
+            }
 
-        db[this.constructor.collectionName] = collection;
-        await MockModel._writeDb(db);
-        return this;
+            db[this.constructor.collectionName] = collection;
+            await MockModel._writeDb(db);
+            return this;
+        });
     }
 }
 

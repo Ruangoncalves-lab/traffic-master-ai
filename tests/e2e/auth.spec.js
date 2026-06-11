@@ -12,6 +12,8 @@ test.describe('Fluxo de Autenticação E2E', () => {
     });
 
     await page.goto('/login');
+    // Aguardar o preloader completar (que agora dura 1.4s) e as transições finalizarem
+    await page.waitForTimeout(2500);
 
     // Preencher campos
     await page.fill('input[type="email"]', 'usuario_errado@teste.com');
@@ -37,6 +39,8 @@ test.describe('Fluxo de Autenticação E2E', () => {
     });
 
     await page.goto('/login');
+    // Aguardar o preloader completar (que agora dura 1.4s) e as transições finalizarem
+    await page.waitForTimeout(2500);
 
     // Preencher campos
     await page.fill('input[type="email"]', 'sucesso@teste.com');

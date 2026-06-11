@@ -1,3 +1,4 @@
+-- POLICY: This migration must be 100% non-destructive. Do NOT use DROP TABLE. Use CREATE TABLE IF NOT EXISTS and ALTER TABLE ADD COLUMN IF NOT EXISTS.
 -- Create meta_tokens table
 CREATE TABLE IF NOT EXISTS public.meta_tokens (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,

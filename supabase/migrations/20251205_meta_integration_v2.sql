@@ -1,3 +1,4 @@
+-- POLICY: This migration must be 100% non-destructive. Do NOT use DROP TABLE. Use CREATE TABLE IF NOT EXISTS and ALTER TABLE ADD COLUMN IF NOT EXISTS.
 -- 20251205_meta_integration_v2.sql
 -- Refatorado para ser 100% não-destrutivo em ambiente de produção
 

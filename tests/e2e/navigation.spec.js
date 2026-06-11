@@ -12,6 +12,8 @@ test.describe('Navegação e Layout E2E', () => {
   test('deve navegar pelas abas principais da Sidebar e visualizar as telas corretas', async ({ page }) => {
     // Ir para a página inicial (Dashboard)
     await page.goto('/');
+    // Aguardar o preloader completar (que agora dura 1.4s)
+    await page.waitForTimeout(2500);
 
     // Validar carregamento do Dashboard
     await expect(page.locator('text=Acompanhe o desempenho de todas as suas campanhas')).toBeVisible();
