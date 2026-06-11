@@ -42,7 +42,8 @@ const SmartCampaignsTable = () => {
 
         try {
             setLoading(true);
-            const res = await fetch(`/api/tenants/${tenantId}/campaigns`, {
+            const API_URL = import.meta.env.VITE_API_URL || '';
+            const res = await fetch(`${API_URL}/api/tenants/${tenantId}/campaigns`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }

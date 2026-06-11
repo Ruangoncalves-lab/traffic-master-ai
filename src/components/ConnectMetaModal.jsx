@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
  * Mas idealmente usamos a rota do backend /api/meta-auth/login
  */
 export const buildMetaAuthURL = (tenantId) => {
-    const BASE_URL = 'http://localhost:5000'; // Ajuste conforme env
+    const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     return `${BASE_URL}/api/meta-auth/login?tenantId=${tenantId}`;
 };
 
